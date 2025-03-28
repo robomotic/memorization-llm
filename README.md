@@ -263,6 +263,69 @@ When using this tool, consider:
 
 > **Note**: Detailed implementation ideas and code examples are available in the [TOOLDESIGN.md](TOOLDESIGN.md) file.
 
+## LLM Benchmarks for Memorization Testing
+
+When implementing perplexity-based methods and other memorization detection techniques, the following benchmarks can be used, ordered approximately by dataset size:
+
+### Small Datasets
+- **HellaSwag** (~70K examples) - Common sense reasoning and language understanding
+- **MMLU** (Multiple-choice, ~15K questions) - Multi-domain knowledge across 57 subjects
+- **TruthfulQA** (~800 questions) - Evaluates model truthfulness and misinformation
+- **ARC** (Challenge: ~2K questions, Easy: ~5K questions) - Grade-school science questions
+- **MedQA-USMLE** (~12K questions) - Medical licensing exam questions with 4 options per question
+
+### Medium Datasets
+- **SQuAD** (~100K questions) - Stanford Question Answering Dataset for reading comprehension
+- **Natural Questions** (~300K examples) - Real Google search queries with answers
+- **GLUE** (~75K-120K examples across tasks) - General Language Understanding Evaluation
+- **SuperGLUE** (~150K examples across tasks) - More challenging version of GLUE
+
+### Large Datasets
+- **C4** (Common Crawl, ~365M documents) - Colossal Clean Crawled Corpus
+- **The Pile** (~825GB of diverse text) - Large-scale text corpus for language modeling
+- **LAMBADA** (~10K passages, drawn from large corpus) - Language modeling benchmark
+- **WikiText** (103M tokens) - Long-form text extracted from Wikipedia
+
+### Very Large Datasets
+- **RedPajama** (~1.2T tokens) - Open reproduction of LLaMA training data
+- **The Stack** (~6TB code corpus) - Programming code dataset across multiple languages
+- **ROOTS** (~1.6T tokens) - Multilingual dataset with diverse content
+
+## LLM APIs for Probability Extraction
+
+The following APIs can be used to extract token probabilities needed for perplexity-based memorization detection:
+
+1. **OpenAI API**
+   - Models: GPT-4, GPT-3.5-Turbo
+   - Features: Supports `logprobs` parameter in completions API
+   - Documentation: Can return top logprobs for most likely tokens and chosen tokens
+
+2. **Anthropic Claude API**
+   - Models: Claude series (Claude 3 Opus, Sonnet, Haiku)
+   - Features: Supports token probabilities through dedicated endpoints
+   - Documentation: Provides probabilities for generated tokens
+
+3. **Hugging Face Inference API**
+   - Models: Access to thousands of open models
+   - Features: Full logprob access for most models
+   - Documentation: Returns detailed token probability distributions
+
+4. **Google Gemini API**
+   - Models: Gemini series
+   - Features: Supports candidate token scoring and logprobs
+   - Documentation: Can return top token probabilities
+
+5. **Self-hosted options**
+   - Implementation: Using libraries like Transformers, vLLM
+   - Models: Llama 2, Mistral, Falcon, etc.
+   - Features: Full access to all token probabilities and model internals
+
+When implementing perplexity-based methods, consider:
+- Token probability format (log vs. raw probabilities)
+- API rate limits and costs
+- Tokenization differences between models
+- Availability of full probability distributions vs. top-k probabilities
+
 ## Future Directions
 
 Future enhancements could include:
