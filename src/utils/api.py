@@ -99,22 +99,33 @@ class APIClient:
                 "max_tokens": max_tokens
             }
         
-        try:
-            response = self.session.post(url, json=payload)
-            response.raise_for_status()
-            return response.json()
-        except requests.exceptions.RequestException as e:
-            logger.error(f"Error calling {self.backend.capitalize()} API: {e}")
-            if hasattr(e, 'response') and e.response:
-                logger.error(f"Response content: {e.response.text}")
-            raise
+        max_retries = 2
+        retry_delay = 2  # seconds
+        
+        for attempt in range(max_retries + 1):
+            try:
+                # Add timeout to prevent hanging on slow responses
+                response = self.session.post(url, json=payload, timeout=30)
+                response.raise_for_status()
+                return response.json()
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Error calling {self.backend.capitalize()} API (attempt {attempt+1}/{max_retries+1}): {e}")
+                if hasattr(e, 'response') and e.response:
+                    logger.error(f"Response content: {e.response.text}")
+                
+                if attempt < max_retries:
+                    logger.info(f"Retrying in {retry_delay} seconds...")
+                    time.sleep(retry_delay)
+                    retry_delay *= 2  # Exponential backoff
+                else:
+                    raise
     
     def get_token_probabilities(self,
                                prompt: str,
                                model: str,
                                temperature: float = 0.0,
                                max_tokens: int = 1,
-                               logprobs: int = 5) -> Dict[str, Any]:
+                               top_logprobs: int = 5) -> Dict[str, Any]:
         """Get token probabilities from the LLM API.
         
         Args:
@@ -122,7 +133,7 @@ class APIClient:
             model: The model to use (for OpenRouter) or ignored (for Azure).
             temperature: The temperature parameter (usually 0 for probabilities).
             max_tokens: The maximum number of tokens to generate.
-            logprobs: The number of most likely tokens to return probabilities for.
+            top_logprobs: The number of most likely tokens to return probabilities for.
             
         Returns:
             The API response with token probabilities.
@@ -134,7 +145,8 @@ class APIClient:
                 "prompt": prompt,
                 "temperature": temperature,
                 "max_tokens": max_tokens,
-                "logprobs": logprobs,
+                "logprobs": True,  # Boolean flag to enable logprobs
+                "top_logprobs": top_logprobs,  # Number of most likely tokens to return
                 "echo": True  # Return the prompt with the response
             }
         else:  # Azure OpenAI
@@ -143,24 +155,38 @@ class APIClient:
                 "prompt": prompt,
                 "temperature": temperature,
                 "max_tokens": max_tokens,
-                "logprobs": logprobs,
+                "logprobs": True,  # Boolean flag to enable logprobs
+                "top_logprobs": top_logprobs,  # Number of most likely tokens to return
                 "echo": True  # Return the prompt with the response
             }
         
-        try:
-            response = self.session.post(url, json=payload)
-            response.raise_for_status()
-            return response.json()
-        except requests.exceptions.RequestException as e:
-            logger.error(f"Error calling {self.backend.capitalize()} API for token probabilities: {e}")
-            if hasattr(e, 'response') and e.response:
-                logger.error(f"Response content: {e.response.text}")
-            
-            # If the API doesn't support logprobs, provide a helpful error message
-            if hasattr(e, 'response') and e.response and e.response.status_code == 400:
-                if "logprobs" in e.response.text.lower():
-                    logger.error("This API endpoint may not support logprobs. Consider using a different backend or model.")
-            raise
+        max_retries = 2
+        retry_delay = 2  # seconds
+        
+        for attempt in range(max_retries + 1):
+            try:
+                # Add timeout to prevent hanging on slow responses
+                response = self.session.post(url, json=payload, timeout=30)
+                response.raise_for_status()
+                return response.json()
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Error calling {self.backend.capitalize()} API for token probabilities (attempt {attempt+1}/{max_retries+1}): {e}")
+                if hasattr(e, 'response') and e.response:
+                    logger.error(f"Response content: {e.response.text}")
+                
+                # If the API doesn't support logprobs, provide a helpful error message
+                if hasattr(e, 'response') and e.response and e.response.status_code == 400:
+                    if "logprobs" in e.response.text.lower():
+                        logger.error("This API endpoint may not support logprobs. Consider using a different backend or model.")
+                        # Don't retry if the API doesn't support logprobs
+                        break
+                
+                if attempt < max_retries:
+                    logger.info(f"Retrying in {retry_delay} seconds...")
+                    time.sleep(retry_delay)
+                    retry_delay *= 2  # Exponential backoff
+                else:
+                    raise
             
     def calculate_sequence_probability(self, 
                                      prompt: str, 
@@ -183,11 +209,27 @@ class APIClient:
             # Get token probabilities from the API
             response = self.get_token_probabilities(full_text, model)
             
+            # Check if we have a valid response with logprobs
+            if not response or 'choices' not in response or not response['choices']:
+                logger.warning(f"Invalid response format: {response}")
+                raise ValueError("Invalid response format or empty response")
+                
+            # Check if logprobs are present in the response
+            logprobs_data = response.get('choices', [{}])[0].get('logprobs', {})
+            if not logprobs_data:
+                logger.warning(f"No logprobs data in response. Model {model} may not support logprobs. Response: {json.dumps(response, indent=2)}")
+                raise ValueError("No logprobs data in response")
+            
             # Extract token probabilities for the continuation portion
             # This is a simplified approach - real implementation would need to align
             # tokenization boundaries correctly
-            tokens = response.get('choices', [{}])[0].get('logprobs', {}).get('tokens', [])
-            token_logprobs = response.get('choices', [{}])[0].get('logprobs', {}).get('token_logprobs', [])
+            tokens = logprobs_data.get('tokens', [])
+            token_logprobs = logprobs_data.get('token_logprobs', [])
+            
+            # Verify we have tokens and logprobs
+            if not tokens or not token_logprobs:
+                logger.warning(f"No tokens or logprobs in response. Model {model} may not provide token-level probabilities. Response: {json.dumps(response, indent=2)}")
+                raise ValueError("No tokens or logprobs in response")
             
             # Find where the continuation starts in the tokenized sequence
             # This is approximate and would need to be refined based on the tokenizer

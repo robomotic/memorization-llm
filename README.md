@@ -43,6 +43,30 @@ Research reveals several key factors that influence memorization rates in LLMs:
 - May produce false positives for common/predictable content
 - Threshold for memorization is subjective
 
+**Effect of Sampling Parameters on Log Probabilities**:
+
+When using perplexity-based detection, it's important to understand how sampling parameters affect log probabilities:
+
+- **Temperature**: Controls the randomness of token selection by scaling log probabilities.
+  - Temperature < 1: Makes the probability distribution more peaked (high probabilities become higher, low become lower)
+  - Temperature > 1: Flattens the distribution, making it more uniform
+  - Temperature = 0: Theoretically deterministic, always selecting the highest probability token (greedy decoding)
+  - Formula: `scaled_logprobs = logprobs / temperature` before applying softmax
+
+- **Top_p (Nucleus Sampling)**: Restricts sampling to tokens comprising the top p% of probability mass.
+  - Dynamically selects tokens based on cumulative probability rather than a fixed number
+  - Lower values (e.g., 0.1) restrict to only the most likely tokens
+  - Higher values (e.g., 0.9) allow more diversity while excluding very unlikely tokens
+  - Only tokens within the selected nucleus are considered for sampling
+
+- **Interaction Effects**:
+  - At temperature = 0 with top_p = 1.0: Should consistently select highest probability token
+  - At temperature = 0 with top_p < 1.0: May still be deterministic but restricted to top_p tokens
+  - In practice, even with temperature = 0, implementation details can cause variability in outputs
+  - Small numerical differences in token probabilities can lead to different selections when they're extremely close
+
+For accurate perplexity-based memorization detection, it's best to use raw log probabilities directly from the model before any sampling modifications are applied.
+
 ### 2. N-gram Overlap Analysis
 
 **Description**: Analyzes the overlap between model outputs and training corpus at the n-gram level.

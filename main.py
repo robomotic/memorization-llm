@@ -140,11 +140,20 @@ def run_detection_pipeline(examples: List[Dict[str, Any]],
         # Run each detector
         for method_name, detector in detectors.items():
             try:
-                method_result = detector.detect(
-                    question=example["question"],
-                    options=example["options"],
-                    correct_idx=example["correct_idx"]
-                )
+                # Different detectors require different parameters
+                if method_name in ['ngram', 'embedding']:
+                    # N-gram and embedding detectors don't need correct_idx
+                    method_result = detector.detect(
+                        question=example["question"],
+                        options=example["options"]
+                    )
+                else:
+                    # Perplexity and consistency detectors need correct_idx
+                    method_result = detector.detect(
+                        question=example["question"],
+                        options=example["options"],
+                        correct_idx=example["correct_idx"]
+                    )
                 example_results["detection_results"][method_name] = method_result
             except Exception as e:
                 logger.error(f"Error running {method_name} detector on example {example['id']}: {e}")

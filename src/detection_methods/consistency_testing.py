@@ -7,7 +7,7 @@ from typing import Dict, List, Any, Optional, Tuple
 
 import numpy as np
 
-from src.utils.api import OpenRouterClient
+from src.utils.api import APIClient
 from src.utils.data_loader import format_modified_prompt
 from src.config import CONSISTENCY_TRIALS
 
@@ -18,7 +18,7 @@ class ConsistencyTestingDetector:
     
     def __init__(self, 
                model: str, 
-               api_client: Optional[OpenRouterClient] = None,
+               api_client: Optional[APIClient] = None,
                num_trials: Optional[int] = None):
         """Initialize the consistency testing detector.
         
@@ -28,7 +28,7 @@ class ConsistencyTestingDetector:
             num_trials: Number of consistency trials to run. If None, uses config.
         """
         self.model = model
-        self.api_client = api_client or OpenRouterClient()
+        self.api_client = api_client or APIClient()
         self.num_trials = num_trials or CONSISTENCY_TRIALS
     
     def _get_model_answer(self, prompt: str) -> str:

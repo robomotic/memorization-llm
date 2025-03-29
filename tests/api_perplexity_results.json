@@ -1,0 +1,495 @@
+{
+  "perplexity_comparison": {
+    "known_texts": {
+      "results": [
+        {
+          "text": "The capital of France is Paris.",
+          "perplexity": 1.2623238150583476,
+          "avg_logprob": -0.23295432
+        },
+        {
+          "text": "Water boils at 100 degrees Celsius at sea level.",
+          "perplexity": 2.5837925495095897,
+          "avg_logprob": -0.9492583
+        },
+        {
+          "text": "The Earth revolves around the Sun.",
+          "perplexity": 1.099713993403404,
+          "avg_logprob": -0.09505014
+        }
+      ],
+      "avg_perplexity": 1.64861011932378,
+      "min_perplexity": 1.099713993403404,
+      "max_perplexity": 2.5837925495095897
+    },
+    "random_texts": {
+      "results": [
+        {
+          "text": "y$ON9ei>08/5'+ikAYMH}G>tFl,D.|...",
+          "perplexity": 2.914299551944982,
+          "avg_logprob": -1.0696295
+        },
+        {
+          "text": "Xh!tVHlD1'C}@!RHF(='c~(yV,`uR$...",
+          "perplexity": 1.231563425633873,
+          "avg_logprob": -0.20828444
+        },
+        {
+          "text": "B-^.vj]-Jh+]vM>Lq<Sak$b+M2\"M2m...",
+          "perplexity": 1.245994405017446,
+          "avg_logprob": -0.21993393
+        }
+      ],
+      "avg_perplexity": 1.7972857941987668,
+      "min_perplexity": 1.231563425633873,
+      "max_perplexity": 2.914299551944982
+    },
+    "contrast_ratio": 1.0901824349688995
+  },
+  "progressive_perplexity": [
+    {
+      "position": 0,
+      "prefix_text": "The",
+      "token_count": 1,
+      "perplexity": 2.203226771262916,
+      "avg_logprob": -0.789923,
+      "token_logprobs": [
+        -0.789923
+      ],
+      "top_logprobs": [
+        [
+          {
+            "token": " quick",
+            "logprob": -0.789923,
+            "bytes": [
+              32,
+              113,
+              117,
+              105,
+              99,
+              107
+            ]
+          },
+          {
+            "token": " word",
+            "logprob": -0.9557288,
+            "bytes": [
+              32,
+              119,
+              111,
+              114,
+              100
+            ]
+          },
+          {
+            "token": "\n\n",
+            "logprob": -3.0570128,
+            "bytes": [
+              10,
+              10
+            ]
+          },
+          {
+            "token": " sky",
+            "logprob": -4.4204297,
+            "bytes": [
+              32,
+              115,
+              107,
+              121
+            ]
+          },
+          {
+            "token": " is",
+            "logprob": -4.4380517,
+            "bytes": [
+              32,
+              105,
+              115
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "position": 1,
+      "prefix_text": "The capital",
+      "token_count": 2,
+      "perplexity": 1.3788530770167775,
+      "avg_logprob": -0.32125205,
+      "token_logprobs": [
+        -0.32125205
+      ],
+      "top_logprobs": [
+        [
+          {
+            "token": " of",
+            "logprob": -0.32125205,
+            "bytes": [
+              32,
+              111,
+              102
+            ]
+          },
+          {
+            "token": " city",
+            "logprob": -2.078605,
+            "bytes": [
+              32,
+              99,
+              105,
+              116,
+              121
+            ]
+          },
+          {
+            "token": "of",
+            "logprob": -2.882497,
+            "bytes": [
+              111,
+              102
+            ]
+          },
+          {
+            "token": "city",
+            "logprob": -2.9877903,
+            "bytes": [
+              99,
+              105,
+              116,
+              121
+            ]
+          },
+          {
+            "token": "The",
+            "logprob": -4.114642,
+            "bytes": [
+              84,
+              104,
+              101
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "position": 2,
+      "prefix_text": "The capital of",
+      "token_count": 3,
+      "perplexity": 2.331558667651881,
+      "avg_logprob": -0.846537,
+      "token_logprobs": [
+        -0.846537
+      ],
+      "top_logprobs": [
+        [
+          {
+            "token": " France",
+            "logprob": -0.846537,
+            "bytes": [
+              32,
+              70,
+              114,
+              97,
+              110,
+              99,
+              101
+            ]
+          },
+          {
+            "token": " Spain",
+            "logprob": -3.0118318,
+            "bytes": [
+              32,
+              83,
+              112,
+              97,
+              105,
+              110
+            ]
+          },
+          {
+            "token": "France",
+            "logprob": -3.3854928,
+            "bytes": [
+              70,
+              114,
+              97,
+              110,
+              99,
+              101
+            ]
+          },
+          {
+            "token": " Australia",
+            "logprob": -3.397904,
+            "bytes": [
+              32,
+              65,
+              117,
+              115,
+              116,
+              114,
+              97,
+              108,
+              105,
+              97
+            ]
+          },
+          {
+            "token": " a",
+            "logprob": -3.484366,
+            "bytes": [
+              32,
+              97
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "position": 3,
+      "prefix_text": "The capital of France",
+      "token_count": 4,
+      "perplexity": 1.8023909156819513,
+      "avg_logprob": -0.58911407,
+      "token_logprobs": [
+        -0.58911407
+      ],
+      "top_logprobs": [
+        [
+          {
+            "token": "The",
+            "logprob": -0.58911407,
+            "bytes": [
+              84,
+              104,
+              101
+            ]
+          },
+          {
+            "token": "is",
+            "logprob": -1.3455304,
+            "bytes": [
+              105,
+              115
+            ]
+          },
+          {
+            "token": "Paris",
+            "logprob": -1.7451314,
+            "bytes": [
+              80,
+              97,
+              114,
+              105,
+              115
+            ]
+          },
+          {
+            "token": " is",
+            "logprob": -4.632283,
+            "bytes": [
+              32,
+              105,
+              115
+            ]
+          },
+          {
+            "token": "the",
+            "logprob": -9.183909,
+            "bytes": [
+              116,
+              104,
+              101
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "position": 4,
+      "prefix_text": "The capital of France is",
+      "token_count": 5,
+      "perplexity": 1.1381602693333328,
+      "avg_logprob": -0.12941316,
+      "token_logprobs": [
+        -0.12941316
+      ],
+      "top_logprobs": [
+        [
+          {
+            "token": "Paris",
+            "logprob": -0.12941316,
+            "bytes": [
+              80,
+              97,
+              114,
+              105,
+              115
+            ]
+          },
+          {
+            "token": " Paris",
+            "logprob": -2.1104274,
+            "bytes": [
+              32,
+              80,
+              97,
+              114,
+              105,
+              115
+            ]
+          },
+          {
+            "token": " ",
+            "logprob": -9.260084,
+            "bytes": [
+              32
+            ]
+          },
+          {
+            "token": "\n\n",
+            "logprob": -10.760311,
+            "bytes": [
+              10,
+              10
+            ]
+          },
+          {
+            "token": "\n",
+            "logprob": -10.900358,
+            "bytes": [
+              10
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "position": 5,
+      "prefix_text": "The capital of France is Paris",
+      "token_count": 6,
+      "perplexity": 1.1380078115955001,
+      "avg_logprob": -0.1292792,
+      "token_logprobs": [
+        -0.1292792
+      ],
+      "top_logprobs": [
+        [
+          {
+            "token": ".",
+            "logprob": -0.1292792,
+            "bytes": [
+              46
+            ]
+          },
+          {
+            "token": "Correct",
+            "logprob": -2.833848,
+            "bytes": [
+              67,
+              111,
+              114,
+              114,
+              101,
+              99,
+              116
+            ]
+          },
+          {
+            "token": "Paris",
+            "logprob": -3.6068087,
+            "bytes": [
+              80,
+              97,
+              114,
+              105,
+              115
+            ]
+          },
+          {
+            "token": "Yes",
+            "logprob": -4.2877398,
+            "bytes": [
+              89,
+              101,
+              115
+            ]
+          },
+          {
+            "token": ",",
+            "logprob": -4.802106,
+            "bytes": [
+              44
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "position": 6,
+      "prefix_text": "The capital of France is Paris.",
+      "token_count": 7,
+      "perplexity": 1.257884862695203,
+      "avg_logprob": -0.22943163,
+      "token_logprobs": [
+        -0.22943163
+      ],
+      "top_logprobs": [
+        [
+          {
+            "token": "Paris",
+            "logprob": -0.22943163,
+            "bytes": [
+              80,
+              97,
+              114,
+              105,
+              115
+            ]
+          },
+          {
+            "token": "It",
+            "logprob": -2.666409,
+            "bytes": [
+              73,
+              116
+            ]
+          },
+          {
+            "token": "Yes",
+            "logprob": -2.8001313,
+            "bytes": [
+              89,
+              101,
+              115
+            ]
+          },
+          {
+            "token": "Correct",
+            "logprob": -4.1530194,
+            "bytes": [
+              67,
+              111,
+              114,
+              114,
+              101,
+              99,
+              116
+            ]
+          },
+          {
+            "token": "The",
+            "logprob": -4.5822186,
+            "bytes": [
+              84,
+              104,
+              101
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

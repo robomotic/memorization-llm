@@ -6,7 +6,7 @@ from typing import Dict, List, Any, Optional, Tuple
 
 import numpy as np
 
-from src.utils.api import OpenRouterClient
+from src.utils.api import APIClient
 from src.config import PERPLEXITY_THRESHOLD
 
 logger = logging.getLogger(__name__)
@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 class PerplexityDetector:
     """Detector using perplexity-based methods for multiple-choice questions."""
     
-    def __init__(self, model: str, api_client: Optional[OpenRouterClient] = None):
+    def __init__(self, model: str, api_client: Optional[APIClient] = None):
         """Initialize the perplexity detector.
         
         Args:
@@ -22,7 +22,7 @@ class PerplexityDetector:
             api_client: Optional API client. If None, a new one is created.
         """
         self.model = model
-        self.api_client = api_client or OpenRouterClient()
+        self.api_client = api_client or APIClient()
     
     def detect(self, question: str, options: List[str], correct_idx: int) -> Dict[str, Any]:
         """Detect memorization using perplexity-based methods.

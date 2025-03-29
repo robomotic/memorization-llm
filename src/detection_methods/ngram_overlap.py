@@ -8,14 +8,16 @@ from collections import Counter
 import nltk
 from nltk.util import ngrams
 
-from src.utils.api import OpenRouterClient
+from src.utils.api import APIClient
 from src.config import NGRAM_SIZES
 
 # Download nltk resources if not already available
 try:
     nltk.data.find('tokenizers/punkt')
+    nltk.data.find('tokenizers/punkt_tab')
 except LookupError:
     nltk.download('punkt')
+    nltk.download('punkt_tab')
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +26,7 @@ class NgramOverlapDetector:
     
     def __init__(self, 
                model: str, 
-               api_client: Optional[OpenRouterClient] = None,
+               api_client: Optional[APIClient] = None,
                ngram_sizes: Optional[List[int]] = None):
         """Initialize the n-gram overlap detector.
         
@@ -34,7 +36,7 @@ class NgramOverlapDetector:
             ngram_sizes: Sizes of n-grams to analyze. If None, uses config values.
         """
         self.model = model
-        self.api_client = api_client or OpenRouterClient()
+        self.api_client = api_client or APIClient()
         self.ngram_sizes = ngram_sizes or NGRAM_SIZES
     
     def _extract_ngrams(self, text: str, n: int) -> Set[Tuple[str, ...]]:

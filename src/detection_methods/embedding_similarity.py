@@ -8,7 +8,7 @@ import torch
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
-from src.utils.api import OpenRouterClient
+from src.utils.api import APIClient
 from src.config import EMBEDDING_MODEL, EMBEDDING_SIMILARITY_THRESHOLD
 
 logger = logging.getLogger(__name__)
@@ -18,7 +18,7 @@ class EmbeddingSimilarityDetector:
     
     def __init__(self, 
                model: str, 
-               api_client: Optional[OpenRouterClient] = None,
+               api_client: Optional[APIClient] = None,
                embedding_model: Optional[str] = None):
         """Initialize the embedding similarity detector.
         
@@ -28,7 +28,7 @@ class EmbeddingSimilarityDetector:
             embedding_model: Model to use for embeddings. If None, uses config value.
         """
         self.model = model
-        self.api_client = api_client or OpenRouterClient()
+        self.api_client = api_client or APIClient()
         
         # Load the embedding model
         embedding_model_name = embedding_model or EMBEDDING_MODEL

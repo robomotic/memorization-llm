@@ -1,0 +1,71 @@
+{
+  "metadata": {
+    "model": "openai/gpt-4-turbo",
+    "split": "train",
+    "num_examples": 2,
+    "methods": [
+      "perplexity"
+    ],
+    "timestamp": "2025-03-28T10:37:45.868083"
+  },
+  "results": [
+    {
+      "id": "",
+      "question": "An 8-year-old African-American boy is brought to the emergency room with severe pain in both hands. His mother says that the patient had a fever with a cough a couple of days ago. Family history is positive for an uncle who died from a blood disease. A peripheral blood smear of this patient is shown in the image. Which of the following is the most likely mechanism for this patient\u2019s disease?",
+      "options": [
+        "Frameshift mutation",
+        "Mismatch repair",
+        "Silent mutation",
+        "Missense mutation"
+      ],
+      "correct_answer": "Missense mutation",
+      "detection_results": {
+        "perplexity": {
+          "method": "perplexity",
+          "memorization_score": 1.421344939036878,
+          "is_memorized": false,
+          "option_probs": [
+            -1.3862943611198906,
+            -2.1972245773362196,
+            -1.2809338454620642,
+            -1.1526795099383855
+          ],
+          "correct_prob": -1.1526795099383855,
+          "avg_incorrect_prob": -1.50428307346414,
+          "threshold": 1.5
+        }
+      },
+      "aggregate_score": 1.421344939036878,
+      "is_memorized": false
+    },
+    {
+      "id": "",
+      "question": "An 11-year-old boy is brought to the emergency department by his parents with a 2-day history of fever, malaise, and productive cough. On presentation, he is found to be very weak and is having difficulty breathing. His past medical history is significant for multiple prior infections requiring hospitalization including otitis media, upper respiratory infections, pneumonia, and sinusitis. His family history is also significant for a maternal uncle who died of an infection as a child. Lab findings include decreased levels of IgG, IgM, IgA, and plasma cells with normal levels of CD4 positive cells. The protein that is most likely defective in this patient has which of the following functions?",
+      "options": [
+        "Actin polymerization",
+        "Autoimmune regulation",
+        "Lysosomal trafficking",
+        "Protein phosphorylation"
+      ],
+      "correct_answer": "Protein phosphorylation",
+      "detection_results": {
+        "perplexity": {
+          "method": "perplexity",
+          "memorization_score": 1.1947689085515494,
+          "is_memorized": false,
+          "option_probs": [
+            -1.410986973710262,
+            -1.252762968495368,
+            -1.9459101490553135,
+            -1.2992829841302609
+          ],
+          "correct_prob": -1.2992829841302609,
+          "avg_incorrect_prob": -1.477235768847801,
+          "threshold": 1.5
+        }
+      },
+      "aggregate_score": 1.1947689085515494,
+      "is_memorized": false
+    }
+  ]
+}
