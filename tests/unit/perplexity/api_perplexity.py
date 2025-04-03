@@ -296,6 +296,10 @@ class APIPerplexityAnalyzer:
             "top_logprobs": 5
         }
         
+        # Tokenize the input text using the appropriate model tokenizer
+        text_token_ids = self.tokenize(text)
+        text_tokens = self.decode_tokens(text_token_ids)
+        
         try:
             response = requests.post(api_url, headers=headers, json=payload)
             response.raise_for_status()
@@ -328,7 +332,7 @@ class APIPerplexityAnalyzer:
             # Extract top_logprobs (this is a list of lists of objects)
             top_logprobs = [item.get('top_logprobs', []) for item in content_array]
             
-            return self._process_token_probabilities(tokens, token_logprobs, top_logprobs)
+            return self._process_token_probabilities(tokens, token_logprobs, top_logprobs, text_tokens=text_tokens)
         except Exception as e:
             logger.error(f"Error getting token probabilities from OpenRouter API: {e}")
             raise
@@ -353,25 +357,34 @@ class APIPerplexityAnalyzer:
         # Calculate perplexity from these synthetic logprobs
         return self._process_token_probabilities(tokens, token_logprobs, None)
     
-    def _process_token_probabilities(self, tokens, token_logprobs, top_logprobs):
+    def _process_token_probabilities(self, tokens, token_logprobs, top_logprobs, text_tokens=None, prev_tokens:int=0):
         # Filter out None values (first token might have None logprob)
         valid_logprobs = [lp for lp in token_logprobs if lp is not None]
         
+        # Use the length of text_tokens if provided, otherwise use prev_tokens
+        token_count = len(text_tokens) if text_tokens is not None else prev_tokens + len(valid_logprobs)
+        
         # Calculate perplexity from valid logprobs
-        if valid_logprobs:
-            avg_logprob = sum(valid_logprobs) / len(valid_logprobs)
+        if valid_logprobs and token_count > 0:
+            avg_logprob = sum(valid_logprobs) / token_count
             perplexity = np.exp(-avg_logprob)
         else:
             avg_logprob = 0.0
             perplexity = float('inf')
         
-        return {
+        result = {
             "tokens": tokens,
             "token_logprobs": token_logprobs,
             "top_logprobs": top_logprobs,
             "avg_logprob": avg_logprob,
             "perplexity": perplexity
         }
+        
+        # Add text_tokens to the result if available
+        if text_tokens is not None:
+            result["text_tokens"] = text_tokens
+        
+        return result
     
     def progressive_perplexity(self, text: str) -> List[Dict[str, Any]]:
         """Calculate perplexity progressively for subwindows of text.
